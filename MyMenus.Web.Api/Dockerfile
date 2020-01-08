@@ -8,6 +8,8 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 COPY ["MyMenus.Web.Api/MyMenus.Web.Api.csproj", "MyMenus.Web.Api/"]
+COPY ["MyMenus.Context/MyMenus.Context.csproj", "MyMenus.Context/"]
+COPY ["MyMenus.Entity/MyMenus.Entity.csproj", "MyMenus.Entity/"]
 RUN dotnet restore "MyMenus.Web.Api/MyMenus.Web.Api.csproj"
 COPY . .
 WORKDIR "/src/MyMenus.Web.Api"
@@ -15,6 +17,8 @@ RUN dotnet build "MyMenus.Web.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish
 RUN dotnet publish "MyMenus.Web.Api.csproj" -c Release -o /app/publish
+
+RUN dotnet ef database update
 
 FROM base AS final
 WORKDIR /app

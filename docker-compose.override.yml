@@ -1,0 +1,39 @@
+version: '3.4'
+
+services:
+  mymenus.sql_db:
+    ports:
+      - 8833:1433
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Azerty@123
+    volumes:
+      - ./MSSQL/data:/var/opt/mssql/data
+      - ./MSSQL/log:/var/opt/mssql/log
+      - ./MSSQL/backup:/var/opt/mssql/backup
+
+  mymenus.sql_db_init:
+    environment:
+      - DB_HOST=mymenus.sql_db
+      - DB_USER=SA
+      - DB_PASS=Azerty@123
+      - DB_NAME=MyMenus
+
+
+  mymenus.web.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - DB_HOST=mymenus.sql_db
+      - DB_USER=SA
+      - DB_PASS=Azerty@123
+      - DB_NAME=MyMenus
+    ports:
+      - "80"
+      - "443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+volumes:
+  mymenus.sql_db:

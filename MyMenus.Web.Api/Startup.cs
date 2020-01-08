@@ -1,15 +1,12 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using MyMenus.Context;
 
 namespace MyMenus.Web.Api
 {
@@ -26,6 +23,19 @@ namespace MyMenus.Web.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            #region Database
+
+            string dbHost = Environment.GetEnvironmentVariable("DB_HOST");
+            string dbUser = Environment.GetEnvironmentVariable("DB_USER");
+            string dbPass = Environment.GetEnvironmentVariable("DB_PASS");
+            string dbName = Environment.GetEnvironmentVariable("DB_NAME");
+
+            services.AddDbContext<MyMenusContext>(
+                options => options.UseSqlServer($"Data Source={dbHost};Initial Catalog={dbName};User ID={dbUser};Password={dbPass};")
+            );
+
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

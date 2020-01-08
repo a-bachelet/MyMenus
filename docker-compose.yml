@@ -1,0 +1,33 @@
+version: '3.4'
+
+services:
+  mymenus.sql_db:
+    image: mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04
+    networks:
+      - mymenus
+    container_name: mymenus_sql_db
+
+  mymenus.sql_db_init:
+    image: mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04
+    networks:
+      - mymenus
+    container_name: mymenus_sql_db_init
+    command: bash -c "sleep 7 && /opt/mssql-tools/bin/sqlcmd -S mymenus.sql_db,1433 -U SA -P Azerty@123 -Q \"CREATE DATABASE MyMenus\""
+    depends_on:
+      - mymenus.sql_db
+
+  mymenus.web.api:
+    image: ${DOCKER_REGISTRY-}mymenuswebapi
+    build:
+      context: .
+      dockerfile: MyMenus.Web.Api/Dockerfile
+    container_name: mymenus_web_api
+    depends_on:
+      - mymenus.sql_db
+      - mymenus.sql_db_init
+    networks:
+      - mymenus
+    restart: on-failure
+
+networks:
+  mymenus:    

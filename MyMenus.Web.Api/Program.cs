@@ -1,11 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using MyMenus.Context;
 
 namespace MyMenus.Web.Api
 {
@@ -13,7 +12,24 @@ namespace MyMenus.Web.Api
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            IHost host = CreateHostBuilder(args).Build();
+
+            using (var scope = host.Services.CreateScope())
+            {
+                IServiceProvider services = scope.ServiceProvider;
+                try
+                {
+                    MyMenusContext db = services.GetRequiredService<MyMenusContext>();
+                    db.Database.Migrate();
+                }
+                catch(Exception ex)
+                {
+                    ILogger logger = services.GetRequiredService<ILogger<Program>>();
+                    logger.LogError(ex, "Database Creation/Migrations failed!");
+                }
+            }
+
+            host.Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

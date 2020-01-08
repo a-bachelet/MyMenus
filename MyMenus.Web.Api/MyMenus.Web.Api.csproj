@@ -4,10 +4,16 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>05d9260e-512c-4567-953c-9025b2884522</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MyMenus.Context\MyMenus.Context.csproj" />
   </ItemGroup>
 
 
