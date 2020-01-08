@@ -17,6 +17,6 @@ namespace MyMenus.Entity
         /// <summary>
         ///     The permission associated roles.
         /// </summary>
-        public ICollection<Role> Roles { get; set; }
+        public virtual ICollection<RolePermission> RolePermissions { get; set; }
     }
 }

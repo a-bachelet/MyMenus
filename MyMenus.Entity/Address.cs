@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyMenus.Entity
@@ -51,7 +52,7 @@ namespace MyMenus.Entity
         /// <summary>
         ///     The address user identifier.
         /// </summary>
-        public int UserId { get; set; }
+        public Guid? UserId { get; set; }
 
         /// <summary>
         ///     The address user.

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -18,7 +19,7 @@ namespace MyMenus.Entity
         /// <summary>
         ///     The role parent identifier.
         /// </summary>
-        public int ParentId { get; set; }
+        public Guid? ParentId { get; set; }
 
         /// <summary>
         ///     The role parent.
@@ -26,9 +27,11 @@ namespace MyMenus.Entity
         [ForeignKey(nameof(ParentId))]
         public Role Parent { get; set; }
 
+        public virtual ICollection<Role> Children { get; set; }
+
         /// <summary>
         ///     The role associated permissions.
         /// </summary>
-        public ICollection<Permission> Permissions { get; set; }
+        public virtual ICollection<RolePermission> RolePermissions { get; set; }
     }
 }

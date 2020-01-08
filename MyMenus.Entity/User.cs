@@ -33,7 +33,7 @@ namespace MyMenus.Entity
         /// <summary>
         ///     The user roles.
         /// </summary>
-        public ICollection<Role> Roles { get; set; }
+        public virtual ICollection<Role> Roles { get; set; }
 
         #endregion
 
@@ -60,8 +60,7 @@ namespace MyMenus.Entity
         /// <summary>
         ///     The user address identifier.
         /// </summary>
-        [Required]
-        public int AddressId { get; set; }
+        public Guid? AddressId { get; set; }
 
         /// <summary>
         ///     The user address.
